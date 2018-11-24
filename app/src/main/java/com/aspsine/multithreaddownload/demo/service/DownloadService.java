@@ -158,7 +158,20 @@ public class DownloadService extends Service {
             mAppInfo = appInfo;
             mNotificationManager = notificationManager;
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(context);
-            mBuilder = new NotificationCompat.Builder(context);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                String chanel_id = "3000";
+                CharSequence name = "Download";
+                String description = "Download App";
+                int importance = NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel mChannel = new NotificationChannel(chanel_id, name, importance);
+                mChannel.setDescription(description);
+                mChannel.enableLights(true);
+                mChannel.setLightColor(Color.BLUE);
+                notification_manager.createNotificationChannel(mChannel);
+                mBuilder = new NotificationCompat.Builder(context, chanel_id);
+            } else {
+                mBuilder = new NotificationCompat.Builder(context);
+            }
         }
 
         @Override
